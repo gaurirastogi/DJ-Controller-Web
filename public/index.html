@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ Controller</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dj-controller">
+        <div>
+            <label for="uploadSong1">Choose File for Song 1</label>
+            <input type="file" id="uploadSong1" accept=".mp3, .mp4">
+            <p id="song1Name">No file chosen</p>
+            <button id="playSong1">Play Song 1</button>
+            <button id="pauseSong1">Pause Song 1</button>
+            <button id="stopSong1">Stop Song 1</button>
+            <button id="repeatSong1">Repeat Song 1</button>
+            <br>
+            <p>Current Time: <span id="currentTimeSong1">0:00</span></p>
+            <input type="range" id="seekSong1" min="0" step="1">
+            <br>
+            <input type="range" id="volumeSong1" min="0" max="1" step="0.01" value="1">
+            <br>
+            <input type="range" id="pitchSong1" min="0.5" max="2" step="0.1" value="1">
+            <label for="pitchSong1">Pitch Song 1</label>
+            <br>
+            <button id="loopSong1">Loop Song 1</button>
+            <br>
+            <label for="bassSong1">Bass</label>
+            <input type="range" id="bassSong1" min="0" max="1" step="0.01" value="0.5">
+            <label for="midSong1">Mid</label>
+            <input type="range" id="midSong1" min="0" max="1" step="0.01" value="0.5">
+            <label for="trebleSong1">Treble</label>
+            <input type="range" id="trebleSong1" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <br>
+        <div>
+            <label for="uploadSong2">Choose File for Song 2</label>
+            <input type="file" id="uploadSong2" accept=".mp3, .mp4">
+            <p id="song2Name">No file chosen</p>
+            <button id="playSong2">Play Song 2</button>
+            <button id="pauseSong2">Pause Song 2</button>
+            <button id="stopSong2">Stop Song 2</button>
+            <button id="repeatSong2">Repeat Song 2</button>
+            <br>
+            <p>Current Time: <span id="currentTimeSong2">0:00</span></p>
+            <input type="range" id="seekSong2" min="0" step="1">
+            <br>
+            <input type="range" id="volumeSong2" min="0" max="1" step="0.01" value="1">
+            <br>
+            <input type="range" id="pitchSong2" min="0.5" max="2" step="0.1" value="1">
+            <label for="pitchSong2">Pitch Song 2</label>
+            <br>
+            <button id="loopSong2">Loop Song 2</button>
+            <br>
+            <label for="bassSong2">Bass</label>
+            <input type="range" id="bassSong2" min="0" max="1" step="0.01" value="0.5">
+            <label for="midSong2">Mid</label>
+            <input type="range" id="midSong2" min="0" max="1" step="0.01" value="0.5">
+            <label for="trebleSong2">Treble</label>
+            <input type="range" id="trebleSong2" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <br>
+        <div>
+            <button id="autoFade">Auto Fade</button>
+            <button id="syncSongs">Sync Songs</button>
+            <br>
+            <input type="range" id="crossfade" min="0" max="1" step="0.01" value="0.5">
+            <label for="crossfade">Crossfade</label>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
