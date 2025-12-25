@@ -3,73 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DJ Controller</title>
+    <title>DJ Controller | Intelligent Mixing Assistant</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="dj-controller">
-        <div>
-            <label for="uploadSong1">Choose File for Song 1</label>
-            <input type="file" id="uploadSong1" accept=".mp3, .mp4">
-            <p id="song1Name">No file chosen</p>
-            <button id="playSong1">Play Song 1</button>
-            <button id="pauseSong1">Pause Song 1</button>
-            <button id="stopSong1">Stop Song 1</button>
-            <button id="repeatSong1">Repeat Song 1</button>
-            <br>
-            <p>Current Time: <span id="currentTimeSong1">0:00</span></p>
-            <input type="range" id="seekSong1" min="0" step="1">
-            <br>
-            <input type="range" id="volumeSong1" min="0" max="1" step="0.01" value="1">
-            <br>
-            <input type="range" id="pitchSong1" min="0.5" max="2" step="0.1" value="1">
-            <label for="pitchSong1">Pitch Song 1</label>
-            <br>
-            <button id="loopSong1">Loop Song 1</button>
-            <br>
-            <label for="bassSong1">Bass</label>
-            <input type="range" id="bassSong1" min="0" max="1" step="0.01" value="0.5">
-            <label for="midSong1">Mid</label>
-            <input type="range" id="midSong1" min="0" max="1" step="0.01" value="0.5">
-            <label for="trebleSong1">Treble</label>
-            <input type="range" id="trebleSong1" min="0" max="1" step="0.01" value="0.5">
-        </div>
-        <br>
-        <div>
-            <label for="uploadSong2">Choose File for Song 2</label>
-            <input type="file" id="uploadSong2" accept=".mp3, .mp4">
-            <p id="song2Name">No file chosen</p>
-            <button id="playSong2">Play Song 2</button>
-            <button id="pauseSong2">Pause Song 2</button>
-            <button id="stopSong2">Stop Song 2</button>
-            <button id="repeatSong2">Repeat Song 2</button>
-            <br>
-            <p>Current Time: <span id="currentTimeSong2">0:00</span></p>
-            <input type="range" id="seekSong2" min="0" step="1">
-            <br>
-            <input type="range" id="volumeSong2" min="0" max="1" step="0.01" value="1">
-            <br>
-            <input type="range" id="pitchSong2" min="0.5" max="2" step="0.1" value="1">
-            <label for="pitchSong2">Pitch Song 2</label>
-            <br>
-            <button id="loopSong2">Loop Song 2</button>
-            <br>
-            <label for="bassSong2">Bass</label>
-            <input type="range" id="bassSong2" min="0" max="1" step="0.01" value="0.5">
-            <label for="midSong2">Mid</label>
-            <input type="range" id="midSong2" min="0" max="1" step="0.01" value="0.5">
-            <label for="trebleSong2">Treble</label>
-            <input type="range" id="trebleSong2" min="0" max="1" step="0.01" value="0.5">
-        </div>
-        <br>
-        <div>
-            <button id="autoFade">Auto Fade</button>
-            <button id="syncSongs">Sync Songs</button>
-            <br>
-            <input type="range" id="crossfade" min="0" max="1" step="0.01" value="0.5">
-            <label for="crossfade">Crossfade</label>
+    <div class="app-container">
+        <!-- Header with Auth -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">🎧</span>
+                <span class="logo-text">DJ Controller</span>
+            </div>
+            <div id="authSection" class="auth-section">
+                <span id="userInfo" class="user-info hidden"></span>
+                <button id="spotifyLoginBtn" class="btn btn-spotify" onclick="window.location.href='/api/spotify/auth'">
+                    <svg class="spotify-icon" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                    Connect Spotify
+                </button>
+                <button id="spotifyLogoutBtn" class="btn btn-secondary hidden">Logout</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Panel: Decks -->
+            <section class="decks-section">
+                <!-- Deck A -->
+                <div class="deck deck-a">
+                    <div class="deck-header">
+                        <span class="deck-label">DECK A</span>
+                        <div id="deckAInfo" class="deck-info">
+                            <div class="track-name">No track loaded</div>
+                        </div>
+                    </div>
+                    <div class="deck-controls">
+                        <div class="file-upload">
+                            <label for="uploadSong1" class="btn btn-upload">📁 Load Local</label>
+                            <input type="file" id="uploadSong1" accept=".mp3, .mp4">
+                            <p id="song1Name" class="filename">No file chosen</p>
+                        </div>
+
+                        <div class="transport-controls">
+                            <button id="playSong1" class="btn btn-play">▶</button>
+                            <button id="pauseSong1" class="btn btn-pause">⏸</button>
+                            <button id="stopSong1" class="btn btn-stop">⏹</button>
+                            <button id="repeatSong1" class="btn btn-repeat">🔁</button>
+                        </div>
+
+                        <div class="time-display">
+                            <span id="currentTimeSong1">0:00</span>
+                            <input type="range" id="seekSong1" class="seek-slider" min="0" step="1" value="0">
+                        </div>
+
+                        <div class="mixer-controls">
+                            <div class="control-group">
+                                <label>Volume <span class="slider-value" id="vol1Val">100%</span></label>
+                                <input type="range" id="volumeSong1" min="0" max="1" step="0.01" value="1">
+                                <div class="slider-scale"><span>0</span><span>50</span><span>100</span></div>
+                            </div>
+                            <div class="control-group">
+                                <label>Pitch <span class="slider-value" id="pitch1Val">0%</span></label>
+                                <input type="range" id="pitchSong1" min="0.5" max="1.5" step="0.01" value="1">
+                                <div class="slider-scale"><span>-50%</span><span>0</span><span>+50%</span></div>
+                                <div id="effectiveBPM1" class="effective-bpm" style="font-size: 11px; color: #3b82f6; margin-top: 4px; text-align: center;">
+                                    Pitch works on local files only
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="eq-controls">
+                            <div class="eq-group">
+                                <label>Bass</label>
+                                <input type="range" id="bassSong1" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-group">
+                                <label>Mid</label>
+                                <input type="range" id="midSong1" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-group">
+                                <label>Treble</label>
+                                <input type="range" id="trebleSong1" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-note" style="font-size: 10px; color: #666; margin-top: 4px;">
+                                EQ works on local files only
+                            </div>
+                        </div>
+
+                        <button id="loopSong1" class="btn btn-loop">Loop</button>
+                    </div>
+                </div>
+
+                <!-- Master Controls -->
+                <div class="master-controls">
+                    <div class="crossfader-section">
+                        <label>Crossfader</label>
+                        <div id="crossfaderLevels" class="crossfader-levels" style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                            <span id="crossfaderA" style="color: #3b82f6;">A: 100%</span>
+                            <span id="crossfaderStatus" style="color: #888;">Center</span>
+                            <span id="crossfaderB" style="color: #f97316;">B: 100%</span>
+                        </div>
+                        <input type="range" id="crossfade" class="crossfader" min="0" max="1" step="0.01" value="0.5">
+                        <div class="crossfader-labels">
+                            <span>A</span>
+                            <span>B</span>
+                        </div>
+                    </div>
+                    <div class="master-buttons">
+                        <button id="autoFade" class="btn btn-master">Auto Fade</button>
+                        <button id="syncSongs" class="btn btn-master" title="Sync local audio BPM to match the other deck">Sync BPM</button>
+                    </div>
+                    <div style="font-size: 10px; color: #666; text-align: center; margin-top: 8px;">
+                        Pitch/EQ/Sync work on local files only
+                    </div>
+                </div>
+
+                <!-- Deck B -->
+                <div class="deck deck-b">
+                    <div class="deck-header">
+                        <span class="deck-label">DECK B</span>
+                        <div id="deckBInfo" class="deck-info">
+                            <div class="track-name">No track loaded</div>
+                        </div>
+                    </div>
+                    <div class="deck-controls">
+                        <div class="file-upload">
+                            <label for="uploadSong2" class="btn btn-upload">📁 Load Local</label>
+                            <input type="file" id="uploadSong2" accept=".mp3, .mp4">
+                            <p id="song2Name" class="filename">No file chosen</p>
+                        </div>
+
+                        <div class="transport-controls">
+                            <button id="playSong2" class="btn btn-play">▶</button>
+                            <button id="pauseSong2" class="btn btn-pause">⏸</button>
+                            <button id="stopSong2" class="btn btn-stop">⏹</button>
+                            <button id="repeatSong2" class="btn btn-repeat">🔁</button>
+                        </div>
+
+                        <div class="time-display">
+                            <span id="currentTimeSong2">0:00</span>
+                            <input type="range" id="seekSong2" class="seek-slider" min="0" step="1" value="0">
+                        </div>
+
+                        <div class="mixer-controls">
+                            <div class="control-group">
+                                <label>Volume <span class="slider-value" id="vol2Val">100%</span></label>
+                                <input type="range" id="volumeSong2" min="0" max="1" step="0.01" value="1">
+                                <div class="slider-scale"><span>0</span><span>50</span><span>100</span></div>
+                            </div>
+                            <div class="control-group">
+                                <label>Pitch <span class="slider-value" id="pitch2Val">0%</span></label>
+                                <input type="range" id="pitchSong2" min="0.5" max="1.5" step="0.01" value="1">
+                                <div class="slider-scale"><span>-50%</span><span>0</span><span>+50%</span></div>
+                                <div id="effectiveBPM2" class="effective-bpm" style="font-size: 11px; color: #f97316; margin-top: 4px; text-align: center;">
+                                    Pitch works on local files only
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="eq-controls">
+                            <div class="eq-group">
+                                <label>Bass</label>
+                                <input type="range" id="bassSong2" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-group">
+                                <label>Mid</label>
+                                <input type="range" id="midSong2" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-group">
+                                <label>Treble</label>
+                                <input type="range" id="trebleSong2" min="0" max="1" step="0.01" value="0.5" class="eq-slider">
+                                <span class="slider-value eq-val">0dB</span>
+                            </div>
+                            <div class="eq-note" style="font-size: 10px; color: #666; margin-top: 4px;">
+                                EQ works on local files only
+                            </div>
+                        </div>
+
+                        <button id="loopSong2" class="btn btn-loop">Loop</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Intelligent Features -->
+            <aside class="features-panel">
+                <!-- Spotify Playlist Selector -->
+                <section id="playlistSection" class="feature-section hidden">
+                    <h3 class="section-title">📋 Playlist</h3>
+                    <select id="playlistSelect" class="playlist-select">
+                        <option value="">Connect Spotify to load playlists...</option>
+                    </select>
+                </section>
+
+                <!-- Mixing Assistant -->
+                <section id="mixingAssistant" class="feature-section">
+                    <h3 class="section-title">🎼 Mixing Assistant</h3>
+                    <div id="transitionCard" class="transition-card">
+                        <div class="empty-state">
+                            Load tracks to both decks to see transition analysis
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Auto-DJ Section -->
+                <section id="autoDJSection" class="feature-section hidden">
+                    <div class="section-header">
+                        <h3 class="section-title">🤖 Auto-DJ</h3>
+                        <button id="autoDJToggle" class="btn btn-autodj">▶ Enable Auto-DJ</button>
+                    </div>
+
+                    <!-- Weights Configuration -->
+                    <div id="weightsPanel" class="weights-panel">
+                        <h4 class="subsection-title">Scoring Weights</h4>
+                        <div class="weight-sliders">
+                            <div class="weight-control">
+                                <label>BPM <span class="weight-value">30%</span></label>
+                                <input type="range" id="weightBPM" min="0" max="1" step="0.05" value="0.3">
+                            </div>
+                            <div class="weight-control">
+                                <label>Energy <span class="weight-value">25%</span></label>
+                                <input type="range" id="weightEnergy" min="0" max="1" step="0.05" value="0.25">
+                            </div>
+                            <div class="weight-control">
+                                <label>Key <span class="weight-value">20%</span></label>
+                                <input type="range" id="weightKey" min="0" max="1" step="0.05" value="0.2">
+                            </div>
+                            <div class="weight-control">
+                                <label>Danceability <span class="weight-value">15%</span></label>
+                                <input type="range" id="weightDanceability" min="0" max="1" step="0.05" value="0.15">
+                            </div>
+                            <div class="weight-control">
+                                <label>Progression <span class="weight-value">10%</span></label>
+                                <input type="range" id="weightProgression" min="0" max="1" step="0.05" value="0.1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Candidates List -->
+                    <div class="candidates-section">
+                        <h4 class="subsection-title">Next Track Candidates</h4>
+                        <div id="candidatesList" class="candidates-list">
+                            <div class="empty-state">
+                                Select a playlist to see track recommendations
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analyticsSection" class="feature-section">
+                    <div class="section-header">
+                        <h3 class="section-title">📊 Session Analytics</h3>
+                        <button id="endSessionBtn" class="btn btn-secondary btn-sm">End Session</button>
+                    </div>
+                    <div id="sessionSummary" class="session-summary">
+                        <div class="session-active">
+                            <div class="pulse-dot"></div>
+                            <span>Recording session...</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+            <span>Loading...</span>
         </div>
     </div>
+
+    <!-- Scripts - Order matters! -->
     <script src="script.js"></script>
+    <script src="js/spotify-api.js"></script>
+    <script src="js/spotify-player.js"></script>
+    <script src="js/feature-estimator.js"></script>
+    <script src="js/auto-dj-engine.js"></script>
+    <script src="js/harmonic-mixer.js"></script>
+    <script src="js/analytics-dashboard.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
